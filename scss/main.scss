@@ -53,7 +53,7 @@ li {
 .maximize {
   background-color: rgba(108, 205, 63, 1);
 }
-.answer {
+#answer {
   padding-right: 20px;
   font-size: 49px;
   text-align: right;
@@ -113,12 +113,7 @@ button:last-child{
   border-right: 1px solid $gray-1;
 }
 
-//.normal-calculator {
-//  border: 1px solid $dark-color;
-//  -webkit-border-radius: 5px;
-//  -moz-border-radius: 5px;
-//  border-radius: 5px;
-//}
+
 .equal {
   -webkit-border-radius: 0 0 5px 0;
   -moz-border-radius: 0 0 5px 0;

@@ -67,7 +67,7 @@ li {
 .maximize {
   background-color: #6ccd3f; }
 
-.answer {
+#answer {
   padding-right: 20px;
   font-size: 49px;
   text-align: right; }
