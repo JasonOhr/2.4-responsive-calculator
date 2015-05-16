@@ -3,9 +3,17 @@ var numberAsText = "";
 var accumulated_number=[];
 var decimal = false;
 var operator = false;
+var operator_used = "";
 
 function operatorPressed(){
+    switch(operator_used){
+        case "+":
+            var num = accumulated_number.pop() + numberAsText;
+            console.log(num,accumulated_number);
+            accumulated_number.push(num);
 
+
+    }
 }
 function equalPressed(){
 
@@ -21,49 +29,59 @@ function alertButton(event){
     var display = document.getElementById('answer');
     switch (button_type){
         case 'number':
+            console.log("operator ",operator);
+            if (operator && accumulated_number.length > 0){
+                pushNumberToArray(numberAsText);
+                operatorPressed();
+                numberAsText="";
+
+
+            }else if (operator){
+                pushNumberToArray(numberAsText);
+                numberAsText = "";
+
+            }
+
+            numberAsText += calc_input;
+            display.textContent = numberAsText.toString();
 
             break;
-        case 'operator': console.log(button.textContent);
+        case 'operator':
+            if(numberAsText.length == 0) {
+                display.textContent = "0";
+            //}else if(operator && accumulated_number.length > 0){
+            //    //operatorPressed();
+            //    operator_used = button.textContent;
+            }else{
+                operator=false;
+                operator_used = button.textContent;
+                display.textContent = button.textContent;
+                operator=true;
+            }
             break;
         case 'special': ;
             break;
         case 'equal': ;
             break;
-        case 'clear-btn':
-    }
-    if(calc_input === "ac"){
-        answer = 0;
-        numberAsText = "";
-        accumulated_number = [];
-        display.textContent = "0";
-        decimal=false;
-
-    }
-    else if(numberAsText.length == 0 && button_type != "number" ){
-
-        display.textContent = "0";
-        return;
-    }else if (button.className == 'number'){
-
-
-            if (calc_input === "." && !decimal){
+        case 'decimal':
+            if (!decimal) {
                 numberAsText += calc_input;
                 display.textContent = numberAsText.toString();
                 decimal = true;
-
-            }else if(Number(calc_input)){
-                numberAsText += calc_input;
-                display.textContent = numberAsText.toString();
-
             }
-
-    }else if(button.className == "operator"){
-
-        pushNumberToArray(numberAsText);
-        numberAsText = "";
-
-
+            break;
+        case 'clear-btn':
+            answer = 0;
+            numberAsText = "";
+            accumulated_number = [];
+            display.textContent = "0";
+            decimal=false;
+            break;
     }
+
+
+
+
 
 
 
@@ -85,6 +103,10 @@ function alertButton(event){
         element.addEventListener('click',alertButton);
     },false);
 [].forEach.call(document.querySelectorAll('.clear-btn'),
+    function(element) {
+        element.addEventListener('click',alertButton);
+    },false);
+[].forEach.call(document.querySelectorAll('.decimal'),
     function(element) {
         element.addEventListener('click',alertButton);
     },false);

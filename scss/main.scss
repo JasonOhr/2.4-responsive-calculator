@@ -63,14 +63,17 @@ li {
 .number,
 .special,
 .operator,
-.clear-btn
+.clear-btn,
+.equal,
+.decimal
 {
   //width: 56px;
   height: 48px;
 
 }
 .number,
-.number-zero{
+.number-zero,
+.decimal{
   background-color: $number-background-color;
   color: $number-color;
 }

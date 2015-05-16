@@ -78,11 +78,14 @@ li {
 .number,
 .special,
 .operator,
-.clear-btn {
+.clear-btn,
+.equal,
+.decimal {
   height: 48px; }
 
 .number,
-.number-zero {
+.number-zero,
+.decimal {
   background-color: #e0e0e0;
   color: #040404; }
 
