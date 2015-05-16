@@ -82,7 +82,8 @@ li {
   background-color: $special-background-color;
   color: $special-color;
 }
-.operator {
+.operator,
+.equal{
   background-color: $operand-background-color;
   color: $operand-color;
 }

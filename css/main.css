@@ -94,7 +94,8 @@ li {
   background-color: #d6d6d6;
   color: #040404; }
 
-.operator {
+.operator,
+.equal {
   background-color: #e9943a;
   color: white; }
 

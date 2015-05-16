@@ -4,19 +4,35 @@ var accumulated_number=[];
 var decimal = false;
 var operator = false;
 var operator_used = "";
+var equal_pressed = false;
 
 function operatorPressed(){
+    var num = 0;
     switch(operator_used){
         case "+":
-            var num = accumulated_number.pop() + numberAsText;
-            console.log(num,accumulated_number);
+            num = Number( accumulated_number.pop() ) + Number(numberAsText);
             accumulated_number.push(num);
-
-
+            break;
+        case "-":
+            num = Number( accumulated_number.pop() ) - Number(numberAsText);
+            accumulated_number.push(num);
+            break;
+        case "x":
+            num = Number( accumulated_number.pop() ) * Number(numberAsText);
+            accumulated_number.push(num);
+            break;
+        case "/":
+            num = Number( accumulated_number.pop() ) / Number(numberAsText);
+            accumulated_number.push(num);
+            break;
     }
 }
-function equalPressed(){
-
+function equalPressed(display){
+    operatorPressed();
+    display.textContent = accumulated_number[0];
+    numberAsText= "";
+    equal_pressed = true;
+    operator = false;
 }
 function pushNumberToArray(number){
     accumulated_number.push(number);
@@ -29,39 +45,47 @@ function alertButton(event){
     var display = document.getElementById('answer');
     switch (button_type){
         case 'number':
-            console.log("operator ",operator);
-            if (operator && accumulated_number.length > 0){
-                pushNumberToArray(numberAsText);
-                operatorPressed();
-                numberAsText="";
-
-
-            }else if (operator){
-                pushNumberToArray(numberAsText);
-                numberAsText = "";
-
+            if(equal_pressed && !operator){
+                accumulated_number = [];
+                equal_pressed = false;
+                numberAsText += calc_input;
+                display.textContent = numberAsText.toString();
+            }else {
+                console.log("operator ",operator);
+                numberAsText += calc_input;
+                display.textContent = numberAsText.toString();
             }
 
-            numberAsText += calc_input;
-            display.textContent = numberAsText.toString();
 
             break;
         case 'operator':
+            if(equal_pressed) {
+                equal_pressed = false;
+                numberAsText = accumulated_number.pop();
+            }
             if(numberAsText.length == 0) {
                 display.textContent = "0";
-            //}else if(operator && accumulated_number.length > 0){
-            //    //operatorPressed();
-            //    operator_used = button.textContent;
+            }else if(operator && accumulated_number.length > 0){
+
+                operatorPressed();
+                numberAsText = "";
+                operator_used = button.textContent;
             }else{
-                operator=false;
+                pushNumberToArray(numberAsText);
+                console.log("array ",pushNumberToArray[0]);
+                numberAsText = "";
                 operator_used = button.textContent;
                 display.textContent = button.textContent;
                 operator=true;
+                decimal=false;
             }
             break;
-        case 'special': ;
+        case 'special':
+            ;
             break;
-        case 'equal': ;
+        case 'equal':
+            equalPressed(display) ;
+            //numberAsText = "";
             break;
         case 'decimal':
             if (!decimal) {
@@ -76,6 +100,7 @@ function alertButton(event){
             accumulated_number = [];
             display.textContent = "0";
             decimal=false;
+            equal_pressed = false;
             break;
     }
 
@@ -107,6 +132,10 @@ function alertButton(event){
         element.addEventListener('click',alertButton);
     },false);
 [].forEach.call(document.querySelectorAll('.decimal'),
+    function(element) {
+        element.addEventListener('click',alertButton);
+    },false);
+[].forEach.call(document.querySelectorAll('.equal'),
     function(element) {
         element.addEventListener('click',alertButton);
     },false);
