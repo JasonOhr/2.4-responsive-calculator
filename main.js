@@ -4,6 +4,7 @@ var accumulated_number=[];
 var decimal = false;
 var operator = false;
 var operator_used = "";
+var specialButtonUsed = "";
 var equal_pressed = false;
 
 function operatorPressed(){
@@ -27,6 +28,61 @@ function operatorPressed(){
             break;
     }
 }
+function specialButtonPressed(display){
+    var num = 0;
+    switch (specialButtonUsed){
+        case "+/-":
+            if(numberAsText.length > 0){
+                num = Number(numberAsText)* -1;
+                numberAsText = num.toString();
+                display.textContent = numberAsText;
+                console.log(numberAsText);
+
+            }else if (equal_pressed){
+                accumulated_number[0] *= -1;
+                console.log(accumulated_number[0]);
+                display.textContent = accumulated_number[0];
+            }
+            break;
+        case "%":
+            if(accumulated_number.length == 0){
+                return;
+            }
+            else {
+                switch (operator_used){
+                    case "+":
+                        num =  Number(accumulated_number.pop());
+                        num = num + (num * Number(numberAsText) / 100 );
+                        accumulated_number.push(num);
+                        numberAsText = "";
+                        display.textContent = num.toString();
+                        break;
+                    case "-":
+                        num =  Number(accumulated_number.pop());
+                        num = num - (num * Number(numberAsText) / 100 );
+                        accumulated_number.push(num);
+                        numberAsText = "";
+                        display.textContent = num.toString();
+                        break;
+                    case "x":
+                        num =  Number(accumulated_number.pop());
+                        num = num * (Number(numberAsText) / 100 );
+                        accumulated_number.push(num);
+                        numberAsText = "";
+                        display.textContent = num.toString();
+                        break;
+                    case "/":
+                        num =  Number(accumulated_number.pop());
+                        num = num / (Number(numberAsText) / 100 );
+                        accumulated_number.push(num);
+                        numberAsText = "";
+                        display.textContent = num.toString();
+                        break;
+                }
+            }
+    }
+}
+
 function equalPressed(display){
     operatorPressed();
     display.textContent = accumulated_number[0];
@@ -37,13 +93,18 @@ function equalPressed(display){
 function pushNumberToArray(number){
     accumulated_number.push(number);
 }
+
 function alertButton(event){
     var button = event.target;
 
     var calc_input = button.textContent;//
     var button_type = button.className;
     var display = document.getElementById('answer');
+    console.log(button_type);
     switch (button_type){
+
+        case 'number zero':
+            if (numberAsText=="0") numberAsText = 0;
         case 'number':
             if(equal_pressed && !operator){
                 accumulated_number = [];
@@ -72,7 +133,6 @@ function alertButton(event){
                 operator_used = button.textContent;
             }else{
                 pushNumberToArray(numberAsText);
-                console.log("array ",pushNumberToArray[0]);
                 numberAsText = "";
                 operator_used = button.textContent;
                 display.textContent = button.textContent;
@@ -81,11 +141,11 @@ function alertButton(event){
             }
             break;
         case 'special':
-            ;
+            specialButtonUsed = calc_input;
+            specialButtonPressed(display);
             break;
         case 'equal':
             equalPressed(display) ;
-            //numberAsText = "";
             break;
         case 'decimal':
             if (!decimal) {
